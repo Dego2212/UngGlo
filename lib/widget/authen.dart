@@ -69,7 +69,7 @@ class _AuthenState extends State<Authen> {
     );
   }
 
-  widget userForm() {
+  Widget userForm() {
     return Container(
       width: 250.0,
       child: TextField(
