@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1092313617327",
+    "firebase_url": "https://degoglo-60f4f.firebaseio.com",
+    "project_id": "degoglo-60f4f",
+    "storage_bucket": "degoglo-60f4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092313617327:android:824282f1ba488b36ed955a",
+        "android_client_info": {
+          "package_name": "com.flutterthailand.dego1234"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092313617327-gnnmngi0a9vuvkso6c7t7jijthkf3ubq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlIiX0bpIi8RdJOrYx1KllpC9NSaEffFY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092313617327-gnnmngi0a9vuvkso6c7t7jijthkf3ubq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
