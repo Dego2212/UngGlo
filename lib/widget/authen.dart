@@ -1,4 +1,5 @@
 import 'package:dego1234/utility/my_style.dart';
+import 'package:dego1234/widget/register.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,6 +13,8 @@ class _AuthenState extends State<Authen> {
 
 // Method
 
+
+// mySizebox คือ ช่องว่างระหว่างปุ่ม Sign in กับ Sign Up
   Widget mySizebox() {
     return SizedBox(
       width: 5.0,
@@ -26,7 +29,14 @@ class _AuthenState extends State<Authen> {
           'Sign Up',
           style: TextStyle(color: MyStyle().darkColor),
         ),
-        onPressed: () {},
+        onPressed: () {
+          print('Your click signup');
+
+MaterialPageRoute route = MaterialPageRoute(builder: (BuildContext buildContext){return Register();});
+Navigator.of(context).push(route);
+
+
+        },
       ),
     );
   }
@@ -88,7 +98,7 @@ class _AuthenState extends State<Authen> {
 
   Widget showAppName() {
     return Text(
-      'Ung Glo',
+      'Dego GLO',
       style: GoogleFonts.tradeWinds(
           textStyle: TextStyle(
         fontWeight: FontWeight.bold,
@@ -115,6 +125,7 @@ class _AuthenState extends State<Authen> {
               showLogo(),
               showAppName(),
               userForm(),
+              passwordForm(),
               showButton(),
             ],
           ),

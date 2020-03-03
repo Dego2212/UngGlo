@@ -4,8 +4,8 @@ class MyStyle {
   
 // field
 
-Color darkColor = Colors.lightBlue.shade700;
-Color primarycolor = Colors.yellow;
+Color darkColor = Color.fromARGB(0xff, 0x00, 0x4b, 0xa0);
+Color primarycolor = Color.fromARGB(0xff, 0x19, 0x76, 0xd2);
 
 
 
