@@ -1,9 +1,11 @@
 import 'package:dego1234/utility/my_style.dart';
+import 'package:dego1234/utility/normal_dialog.dart';
 import 'package:dego1234/widget/my_service.dart';
 import 'package:dego1234/widget/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 
 class Authen extends StatefulWidget {
   @override
@@ -11,11 +13,11 @@ class Authen extends StatefulWidget {
 }
 
 class _AuthenState extends State<Authen> {
-// Field
-
+  // Field
   bool status = true;
+  String user, password;
 
-// Method
+  // Method
 
   @override
   void initState() {
@@ -27,18 +29,22 @@ class _AuthenState extends State<Authen> {
     FirebaseAuth auth = FirebaseAuth.instance;
     FirebaseUser firebaseUser = await auth.currentUser();
     if (firebaseUser != null) {
-      MaterialPageRoute route =
-          MaterialPageRoute(builder: (BuildContext buildContext) {
-        return Myservice();
-      });
-      Navigator.of(context).pushAndRemoveUntil(route, (Route<dynamic> route) {
-        return false;
-      });
+      routeToMyService();
     } else {
       setState(() {
         status = false;
       });
     }
+  }
+
+  void routeToMyService() {
+    MaterialPageRoute route =
+        MaterialPageRoute(builder: (BuildContext buildContext) {
+      return Myservice();
+    });
+    Navigator.of(context).pushAndRemoveUntil(route, (Route<dynamic> route) {
+      return false;
+    });
   }
 
   Widget showProcess() {
@@ -47,23 +53,26 @@ class _AuthenState extends State<Authen> {
     );
   }
 
-// mySizebox คือ ช่องว่างระหว่างปุ่ม Sign in กับ Sign Up
   Widget mySizebox() {
     return SizedBox(
       width: 5.0,
+      height: 10.0,
     );
   }
 
   Widget signUpButton() {
     return Expanded(
       child: OutlineButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
         borderSide: BorderSide(color: MyStyle().darkColor),
         child: Text(
           'Sign Up',
           style: TextStyle(color: MyStyle().darkColor),
         ),
         onPressed: () {
-          print('Your click signup');
+          print('You Click SignUp');
 
           MaterialPageRoute route =
               MaterialPageRoute(builder: (BuildContext buildContext) {
@@ -78,14 +87,40 @@ class _AuthenState extends State<Authen> {
   Widget signInButton() {
     return Expanded(
       child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
         color: MyStyle().darkColor,
         child: Text(
           'Sign In',
           style: TextStyle(color: Colors.white),
         ),
-        onPressed: () {},
+        onPressed: () {
+          if (user == null ||
+              user.isEmpty ||
+              password == null ||
+              password.isEmpty) {
+            normalDialog(context, 'Have Space', 'Please Fill Every Blank');
+          } else {
+            checkAuthen();
+          }
+        },
       ),
     );
+  }
+
+  Future<void> checkAuthen() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    await auth
+        .signInWithEmailAndPassword(email: user, password: password)
+        .then((response) {
+          routeToMyService();
+        })
+        .catchError((error) {
+          String title = error.code;
+          String message = error.message;
+          normalDialog(context, title, message);
+        });
   }
 
   Widget showButton() {
@@ -106,9 +141,26 @@ class _AuthenState extends State<Authen> {
   Widget passwordForm() {
     return Container(
       width: 250.0,
-      child: TextField(
-        obscureText: true,
-        decoration: InputDecoration(hintText: 'password :'),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        height: 35.0,
+        child: TextField(
+          onChanged: (value) => password = value.trim(),
+          style: TextStyle(color: MyStyle().darkColor),
+          obscureText: true,
+          decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.lock_open,
+              color: MyStyle().darkColor,
+            ),
+            border: InputBorder.none,
+            hintText: 'Password :',
+            hintStyle: TextStyle(color: MyStyle().darkColor),
+          ),
+        ),
       ),
     );
   }
@@ -116,8 +168,28 @@ class _AuthenState extends State<Authen> {
   Widget userForm() {
     return Container(
       width: 250.0,
-      child: TextField(
-        decoration: InputDecoration(hintText: 'user :'),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          color: Colors.white,
+        ),
+        height: 35.0,
+        child: TextField(
+          onChanged: (value) => user = value.trim(),
+          style: TextStyle(color: MyStyle().darkColor),
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.email,
+                color: MyStyle().darkColor,
+              ),
+              contentPadding: EdgeInsets.only(
+                left: 20.0,
+              ),
+              border: InputBorder.none,
+              hintText: 'User :',
+              hintStyle: TextStyle(color: MyStyle().darkColor)),
+        ),
       ),
     );
   }
@@ -132,12 +204,12 @@ class _AuthenState extends State<Authen> {
 
   Widget showAppName() {
     return Text(
-      'Dego GLO',
+      'Ung Glo',
       style: GoogleFonts.tradeWinds(
           textStyle: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontStyle: FontStyle.italic,
         color: MyStyle().darkColor,
+        fontStyle: FontStyle.italic,
+        fontWeight: FontWeight.bold,
         fontSize: 30.0,
       )),
     );
@@ -165,7 +237,9 @@ class _AuthenState extends State<Authen> {
             showLogo(),
             showAppName(),
             userForm(),
+            mySizebox(),
             passwordForm(),
+            mySizebox(),
             showButton(),
           ],
         ),
