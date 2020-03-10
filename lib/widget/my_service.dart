@@ -1,3 +1,5 @@
+import 'package:dego1234/container/show_list_product.dart';
+import 'package:dego1234/container/show_map.dart';
 import 'package:dego1234/utility/my_style.dart';
 import 'package:dego1234/widget/authen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +14,7 @@ class _MyserviceState extends State<Myservice> {
   // field
 
   String nameLogin, emailLogin, urlAvatarLogin;
+  Widget currentWidget = ShowListProduct();
 
 //method
 
@@ -29,6 +32,42 @@ class _MyserviceState extends State<Myservice> {
       emailLogin = firebaseUser.email;
       urlAvatarLogin = firebaseUser.photoUrl;
     });
+  }
+
+  Widget menuListProduct() {
+    return ListTile(
+      onTap: () {
+        setState(() {
+          currentWidget = ShowListProduct();
+        });
+        Navigator.of(context).pop();
+      },
+      subtitle: Text('Show List Producrt from JSON'),
+      title: Text('List Product'),
+      leading: Icon(
+        Icons.home,
+        size: 36.0,
+        color: Colors.orangeAccent,
+      ),
+    );
+  }
+
+  Widget menuMap() {
+    return ListTile(
+      onTap: () {
+        setState(() {
+          currentWidget = ShowMap();
+        });
+        Navigator.of(context).pop();
+      },
+      subtitle: Text('Show Map and Get Location'),
+      title: Text('Show Map'),
+      leading: Icon(
+        Icons.map,
+        size: 36.0,
+        color: Colors.greenAccent,
+      ),
+    );
   }
 
   Widget showAvartar() {
@@ -104,6 +143,8 @@ class _MyserviceState extends State<Myservice> {
       child: ListView(
         children: <Widget>[
           showHead(),
+          menuListProduct(),
+          menuMap(),
           menuSignOut(),
         ],
       ),
@@ -112,7 +153,7 @@ class _MyserviceState extends State<Myservice> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(body: currentWidget,
       drawer: showDrawer(),
       appBar: AppBar(
         title: Text('My Service'),
